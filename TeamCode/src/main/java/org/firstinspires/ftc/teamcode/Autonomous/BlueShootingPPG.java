@@ -41,13 +41,13 @@ public class BlueShootingPPG extends LinearOpMode
         if (opModeIsActive())
         {
             // this section puts the robot in position to shoot the 2 artifacts in the back intake
-            driver.forward_tiles(-0.6); // -0.75
+            driver.forward_tiles(-0.4); // -0.75
             backIntake.setPower(-1.0);
             backBottom.setPower(-1.0);
             launcherWheel.setPower(1.0);
             leftFlyWheel.setPower(-1.0);
             rightFlyWheel.setPower(1.0);
-            sleep(4000);
+            sleep(2000);
 //-------------------------------------------------------------------------------
             // this section turns on all the things needed to shoot the artifact in front intake
             rightBelt.setPower(1.0);
@@ -57,7 +57,7 @@ public class BlueShootingPPG extends LinearOpMode
             backIntake.setPower(-1.0);
             leftFlyWheel.setPower(-1.0);
             rightFlyWheel.setPower(1.0);
-            sleep(4000);
+            sleep(6000);
 //--------------------------------------------------------------------------------------------------
             // this section turns off all the parts to ensure nothing else happens that might give us penalty
             rightBelt.setPower(0);
@@ -69,22 +69,29 @@ public class BlueShootingPPG extends LinearOpMode
             rightFlyWheel.setPower(0.0);
 //--------------------------------------------------------------------------------------------------
             // drives robot to take in the first row of artifacts (GPP)
-            driver.forward_tiles(-0.5);
+            driver.forward_tiles(-0.7);
             driver.turn_ticks(-420,1);
-            driver.strafe_tiles(0.94,1);
+            driver.strafe_tiles(0.97,1);
             frontIntake.setPower(1.0);
             rightBelt.setPower(1.0);
             leftBelt.setPower(-1.0);
             launcherWheel.setPower(1.0);
             backIntake.setPower(-1.0);
 //            driver.forward_tiles(3, 0.2);
-            driver.forward_tiles(3);
-            sleep(500);
+            driver.forward_tiles(1,0.3);
+//            frontIntake.setPower(0);
+//            rightBelt.setPower(0);
+//            leftBelt.setPower(0);
+//            launcherWheel.setPower(0);
+            //change stuff on red to match ur change on turning the intake of and on
+            backIntake.setPower(0);
 //--------------------------------------------------------------------------------------------------
             // backs up and gets in position to shoot in goal
             driver.forward_tiles(-0.4);
             driver.strafe_tiles(-1.5,1);
-            driver.turn_ticks(440,1);
+            driver.turn_ticks(435,1);
+            driver.forward_tiles(0.1);
+            backIntake.setPower(-1.0);
             backBottom.setPower(1.0);
             leftFlyWheel.setPower(-1.0);
             rightFlyWheel.setPower(1.0);

@@ -41,7 +41,7 @@ public class RedShooting extends LinearOpMode
         if (opModeIsActive())
         {
             // this section puts the robot in position to shoot the 2 artifacts in the back intake
-            driver.forward_tiles(-0.5);
+            driver.forward_tiles(-0.4);
             backIntake.setPower(-1.0);
             backBottom.setPower(-1.0);
             launcherWheel.setPower(1.0);
