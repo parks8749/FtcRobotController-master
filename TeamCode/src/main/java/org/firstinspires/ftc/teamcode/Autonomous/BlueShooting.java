@@ -40,7 +40,7 @@ public class BlueShooting extends LinearOpMode
         if (opModeIsActive())
         {
             // this section puts the robot in position to shoot the 2 artifacts in the back intake
-            driver.forward_tiles(-0.75);
+            driver.forward_tiles(-0.5);
             backIntake.setPower(-1.0);
             backBottom.setPower(-1.0);
             launcherWheel.setPower(1.0);
@@ -56,7 +56,7 @@ public class BlueShooting extends LinearOpMode
             backIntake.setPower(-1.0);
             leftFlyWheel.setPower(-1.0);
             rightFlyWheel.setPower(1.0);
-            sleep(5000);
+            sleep(6000);
 //--------------------------------------------------------------------------------------------------
             // this section turns off all the parts to ensure nothing else happens that might give us penalty
             rightBelt.setPower(0);
@@ -69,7 +69,7 @@ public class BlueShooting extends LinearOpMode
 //--------------------------------------------------------------------------------------------------
             // this section moves the robot out of the launch zone to get move points
             driver.turn_ticks(-390,1);
-            driver.forward_tiles(0.7,1.0);
+            driver.forward_tiles(0.4,1.0);
             driver.strafe_tiles(0.5,1.0);
         }
 
