@@ -71,19 +71,18 @@ public class BlueShootingPPG extends LinearOpMode
             // drives robot to take in the first row of artifacts (GPP)
             driver.forward_tiles(-0.7);
             driver.turn_ticks(-420,1);
-            driver.strafe_tiles(0.97,1);
+            driver.strafe_tiles(1,1);
             frontIntake.setPower(1.0);
             rightBelt.setPower(1.0);
             leftBelt.setPower(-1.0);
             launcherWheel.setPower(1.0);
             backIntake.setPower(-1.0);
 //            driver.forward_tiles(3, 0.2);
-            driver.forward_tiles(1,0.3);
+            driver.forward_tiles(1.3,0.3);
 //            frontIntake.setPower(0);
 //            rightBelt.setPower(0);
 //            leftBelt.setPower(0);
 //            launcherWheel.setPower(0);
-            //change stuff on red to match ur change on turning the intake of and on
             backIntake.setPower(0);
 //--------------------------------------------------------------------------------------------------
             // backs up and gets in position to shoot in goal

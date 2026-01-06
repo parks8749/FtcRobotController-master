@@ -71,7 +71,7 @@ public class RedShooting extends LinearOpMode
             // this section moves the robot out of the launch zone to get move points
             driver.turn_ticks(390,1);
             driver.forward_tiles(0.4,1.0);
-            driver.strafe_tiles(-0.5,1.0);
+            driver.strafe_tiles(-0.8,1.0);
         }
 
     }

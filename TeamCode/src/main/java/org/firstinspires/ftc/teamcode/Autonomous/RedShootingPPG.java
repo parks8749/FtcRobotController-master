@@ -14,8 +14,8 @@ public class RedShootingPPG extends LinearOpMode
     public CRServo launcherWheel;
     public DcMotor leftFlyWheel;
     public DcMotor rightFlyWheel;
-    public CRServo leftBelt;
     public CRServo rightBelt;
+    public CRServo leftBelt;
     public CRServo frontIntake;
 
 
@@ -41,7 +41,7 @@ public class RedShootingPPG extends LinearOpMode
         if (opModeIsActive())
         {
             // this section puts the robot in position to shoot the 2 artifacts in the back intake
-            driver.forward_tiles(-0.4);
+            driver.forward_tiles(-0.4); // -0.75
             backIntake.setPower(-1.0);
             backBottom.setPower(-1.0);
             launcherWheel.setPower(1.0);
@@ -71,18 +71,26 @@ public class RedShootingPPG extends LinearOpMode
             // drives robot to take in the first row of artifacts (GPP)
             driver.forward_tiles(-0.7);
             driver.turn_ticks(420,1);
-            driver.strafe_tiles(-0.97,1);
+            driver.strafe_tiles(-1,1);
             frontIntake.setPower(1.0);
             rightBelt.setPower(1.0);
             leftBelt.setPower(-1.0);
             launcherWheel.setPower(1.0);
             backIntake.setPower(-1.0);
-            driver.forward_tiles(1);
+//            driver.forward_tiles(3, 0.2);
+            driver.forward_tiles(1.3,0.3);
+//            frontIntake.setPower(0);
+//            rightBelt.setPower(0);
+//            leftBelt.setPower(0);
+//            launcherWheel.setPower(0);
+            backIntake.setPower(0);
 //--------------------------------------------------------------------------------------------------
             // backs up and gets in position to shoot in goal
-            driver.forward_tiles(-0.6);
-            driver.strafe_tiles(1.4,1);
-            driver.turn_ticks(-385,1);
+            driver.forward_tiles(-0.4);
+            driver.strafe_tiles(1.5,1);
+            driver.turn_ticks(-435,1);
+            driver.forward_tiles(0.1);
+            backIntake.setPower(-1.0);
             backBottom.setPower(1.0);
             leftFlyWheel.setPower(-1.0);
             rightFlyWheel.setPower(1.0);
@@ -96,7 +104,7 @@ public class RedShootingPPG extends LinearOpMode
             backIntake.setPower(0);
             leftFlyWheel.setPower(0.0);
             rightFlyWheel.setPower(0.0);
-            driver.strafe_tiles(-1.5,1);
+            driver.strafe_tiles(1,1);
         }
 
     }
