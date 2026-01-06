@@ -23,7 +23,7 @@ public class Decode2025 extends LinearOpMode {
     @Override
     public void runOpMode() {
         // map hardware
-        driveTrain   = new DriveTrain(hardwareMap, "fL", "bL", "fR", "bR");
+        driveTrain   = new DriveTrain(hardwareMap, "leftFront", "leftBack", "rightFront", "rightBack");
         backBottom   = new BackBottom(hardwareMap.get(CRServo.class, "BackBottom"));
         backIntake   = new BackIntake(hardwareMap.get(CRServo.class, "BackIntake"));
         launcherWheel = new LauncherWheel(hardwareMap.get(CRServo.class, "LauncherWheel"));

@@ -27,8 +27,16 @@ import org.firstinspires.ftc.teamcode.messages.TwoDeadWheelInputsMessage;
 @Config
 public final class TwoDeadWheelLocalizer implements Localizer {
     public static class Params {
-        public double parYTicks = 0.0; // y position of the parallel encoder (in tick units)
-        public double perpXTicks = 0.0; // x position of the perpendicular encoder (in tick units)
+        // Ticks = (Distance in Inches) / (inPerTick of the odo pod)
+        // PARALLEL (Side-to-side) OFFSET:
+        // If the wheel is to the LEFT of center, this should be POSITIVE.
+        // If the wheel is to the RIGHT of center, this should be NEGATIVE.
+        public double parYTicks = 0.0;
+
+        // PERPENDICULAR (Forward/Back) OFFSET:
+        // If the wheel is FORWARD of center, this should be POSITIVE.
+        // If the wheel is BEHIND center, this should be NEGATIVE.
+        public double perpXTicks = 0.0;
     }
 
     public static Params PARAMS = new Params();
@@ -45,19 +53,30 @@ public final class TwoDeadWheelLocalizer implements Localizer {
     private boolean initialized;
     private Pose2d pose;
 
-    public TwoDeadWheelLocalizer(HardwareMap hardwareMap, IMU imu, double inPerTick, Pose2d initialPose) {
-        // TODO: make sure your config has **motors** with these names (or change them)
-        //   the encoders should be plugged into the slot matching the named motor
-        //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
+    public TwoDeadWheelLocalizer(HardwareMap hardwareMap, IMU imu, double driveInPerTick, Pose2d initialPose) {
+        // 1. SETUP ODOMETRY ENCODERS
+        // TODO: Ensure these names match your config ("par" and "perp")
         par = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "par")));
         perp = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "perp")));
 
-        // TODO: reverse encoder directions if needed
-        //   par.setDirection(DcMotorSimple.Direction.REVERSE);
+        // TODO: Reverse direction if the numbers go down when moving forward/left
+        // par.setDirection(DcMotorSimple.Direction.REVERSE);
+        // perp.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.imu = imu;
 
-        this.inPerTick = inPerTick;
+        // 2. CALCULATE "INCHES PER TICK" FOR ODOMETRY
+        // We ignore the 'driveInPerTick' passed from MecanumDrive because odo wheels are different sizes.
+
+        // Example: Rev Through Bore Encoder (8192 ticks) on 32mm wheel
+        // double ODO_TICKS_PER_REV = 8192;
+        // double ODO_WHEEL_RADIUS = 0.6299; // 32mm / 2 / 25.4 to convert to inches
+
+        // REPLACE THESE WITH YOUR SPECIFIC VALUES:
+        double ODO_TICKS_PER_REV = 8192; // 8192 for Rev Through Bore, 2000 for standard red/yellow jackets
+        double ODO_WHEEL_RADIUS = 0.6299; // in inches (32mm = 0.63, 48mm = 0.94)
+
+        this.inPerTick = 2 * Math.PI * ODO_WHEEL_RADIUS / ODO_TICKS_PER_REV;
 
         FlightRecorder.write("TWO_DEAD_WHEEL_PARAMS", PARAMS);
 

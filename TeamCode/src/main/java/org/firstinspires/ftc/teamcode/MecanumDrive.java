@@ -63,6 +63,9 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
         // drive model parameters
+
+
+        // need to change this based on our wheels (ours are gobilda 104 mm)
         public double inPerTick = 1;
         public double lateralInPerTick = inPerTick;
         public double trackWidthTicks = 0;
@@ -245,7 +248,7 @@ public final class MecanumDrive {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        localizer = new DriveLocalizer(pose);
+        localizer = new PinpointLocalizer(hardwareMap, PARAMS.inPerTick, pose);
 
         FlightRecorder.write("MECANUM_PARAMS", PARAMS);
     }
