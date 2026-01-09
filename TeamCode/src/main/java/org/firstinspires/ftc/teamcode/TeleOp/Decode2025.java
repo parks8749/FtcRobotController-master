@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import android.app.VoiceInteractor;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -22,7 +20,6 @@ public class Decode2025 extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        // map hardware
         driveTrain   = new DriveTrain(hardwareMap, "leftFront", "leftBack", "rightFront", "rightBack");
         backBottom   = new BackBottom(hardwareMap.get(CRServo.class, "BackBottom"));
         backIntake   = new BackIntake(hardwareMap.get(CRServo.class, "BackIntake"));
@@ -38,14 +35,12 @@ public class Decode2025 extends LinearOpMode {
                 hardwareMap.get(CRServo.class, "RightBelt")
         );
 
-        // initialize subsystems
         backBottom.init();
         backIntake.init();
         launcherWheel.init();
         flyWheels.init();
         belts.init();
         frontIntake.init();
-
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -54,23 +49,23 @@ public class Decode2025 extends LinearOpMode {
         while (opModeIsActive()) {
             driveTrain.Drive(gamepad1);
 
-            launcherWheel.update(gamepad2.b);
-//            backBottom.update(gamepad2.a);
-
             float leftStick = applyDeadzone(gamepad2.left_stick_y, STICK_DEADZONE);
             float rightStick = applyDeadzone(gamepad2.right_stick_y, STICK_DEADZONE);
-            backIntake.update(leftStick);
-            backBottom.update(belts.getMode(), gamepad2.left_stick_y);
-//            belts.update(gamepad2.x);
+
+            // --- Capture the Override Button ---
+            boolean isAllActive = gamepad2.y;
+
+            // --- Pass gamepad2.y into the subsystems ---
+            launcherWheel.update(gamepad2.b, isAllActive);
+            backIntake.update(leftStick, isAllActive);
+            backBottom.update(belts.getMode(), gamepad2.left_stick_y, isAllActive);
+            flyWheels.update(gamepad2.right_bumper, gamepad2.left_bumper, isAllActive);
+
+            // Belts and FrontIntake remain normal (unless you want to add it there too)
             belts.update(rightStick);
             frontIntake.update(belts.getMode());
-//            frontIntake.update(rightStick);
-//            topFront.update(gamepad2.y);
-
-            flyWheels.update(gamepad2.right_bumper, gamepad2.left_bumper);
 
             telemetry.update();
-
             sleep(10);
         }
     }

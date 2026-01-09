@@ -19,12 +19,21 @@ public class LauncherWheel {
         launcherWheel.setPower(0.0);
     }
 
-    public void update(boolean bPressed) {
+    // UPDATED METHOD
+    public void update(boolean bPressed, boolean override) {
+        // Normal toggle logic updates the 'toggled' variable
         if (bPressed && !lastBPressed) {
             toggled = !toggled;
         }
         lastBPressed = bPressed;
-        launcherWheel.setPower(toggled ? POWER : 0.0);
+
+        // Priority: If override (Y button) is held, spin.
+        // Otherwise, use the toggle state.
+        if (override) {
+            launcherWheel.setPower(POWER);
+        } else {
+            launcherWheel.setPower(toggled ? POWER : 0.0);
+        }
     }
 
     public void stop() {

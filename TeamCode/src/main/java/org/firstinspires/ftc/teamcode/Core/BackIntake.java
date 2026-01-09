@@ -16,7 +16,16 @@ public class BackIntake {
         backIntake.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
-    public void update(float leftStickY) {
+    // UPDATED METHOD
+    public void update(float leftStickY, boolean override) {
+        // 1. Override Priority
+        if (override) {
+            // Adjust sign (- or +) here if it spins the wrong way on 'Y' press
+            backIntake.setPower(-POWER);
+            return;
+        }
+
+        // 2. Normal Stick Logic
         if (Math.abs(leftStickY) < DEADZONE) {
             backIntake.setPower(0.0);
             return;

@@ -14,41 +14,28 @@ public class BackBottom {
     }
 
     public void init() {
-        // keep this direction; change if your wiring requires it
         backBottom.setDirection(DcMotorSimple.Direction.REVERSE);
         backBottom.setPower(0.0);
     }
 
-    /**
-     * Priority rules:
-     * 1) If leftStickY is being used (outside DEADZONE) -> mirror BackIntake behavior.
-     * 2) Otherwise, follow beltsMode:
-     *      mode 1 -> -POWER (forward mapping used previously)
-     *      mode 2 -> +POWER (reverse)
-     *      mode 0 -> 0.0
-     *
-     * @param beltsMode from belts.getMode() (0=off,1=forward,2=reverse)
-     * @param leftStickY raw left stick Y (not deadzoned by caller; we check DEADZONE here)
-     */
-    public void update(int beltsMode, float leftStickY) {
-        // 1) left-stick overrides: mirror BackIntake mapping
+    public void update(int beltsMode, float leftStickY, boolean override) {
+        if (override) {
+            // Adjust sign here if it spins backwards on 'Y' press
+            backBottom.setPower(POWER);
+            return;
+        }
+
+        // 2) left-stick overrides
         if (Math.abs(leftStickY) >= DEADZONE) {
-            // BackIntake uses: leftStickY > 0 ? -POWER : POWER
             backBottom.setPower(leftStickY > 0 ? POWER : -POWER);
             return;
         }
 
-        // 2) left-stick neutral => follow belts mode
+        // 3) belts mode
         switch (beltsMode) {
-            case 1: // belts forward -> backBottom forward mapping (matches previous behavior)
-                backBottom.setPower(-POWER);
-                break;
-            case 2: // belts reverse -> backBottom reverse
-                backBottom.setPower(POWER);
-                break;
-            default: // off
-                backBottom.setPower(0.0);
-                break;
+            case 1: backBottom.setPower(-POWER); break;
+            case 2: backBottom.setPower(POWER); break;
+            default: backBottom.setPower(0.0); break;
         }
     }
 

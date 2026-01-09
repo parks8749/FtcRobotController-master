@@ -32,16 +32,18 @@ public class FlyWheels {
         rightFlyWheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFlyWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        applyPower();
+        applyPower(false);
     }
 
-    public void update(boolean leftPressed, boolean rightPressed) {
+    // UPDATED METHOD
+    public void update(boolean leftPressed, boolean rightPressed, boolean override) {
         boolean leftRising = leftPressed && !prevLeftPressed;
         boolean rightRising = rightPressed && !prevRightPressed;
 
         prevLeftPressed = leftPressed;
         prevRightPressed = rightPressed;
 
+        // Update state based on bumpers
         if (leftRising && rightRising) {
             state = State.STOPPED;
         } else if (leftRising) {
@@ -50,23 +52,31 @@ public class FlyWheels {
             state = (state == State.REVERSE) ? State.STOPPED : State.REVERSE;
         }
 
-        applyPower();
+        // Pass the override to the power applicator
+        applyPower(override);
     }
 
-    private void applyPower() {
+    private void applyPower(boolean override) {
         double p;
-        switch (state) {
-            case FORWARD: p = POWER; break;
-            case REVERSE: p = -POWER; break;
-            default: p = 0.0; break;
+
+        // If Override is ON, force Forward power
+        if (override) {
+            p = POWER;
+        } else {
+            // Otherwise use the State machine
+            switch (state) {
+                case FORWARD: p = POWER; break;
+                case REVERSE: p = -POWER; break;
+                default: p = 0.0; break;
+            }
         }
+
         leftFlyWheel.setPower(p);
         rightFlyWheel.setPower(p);
     }
 
     public void stop() {
         state = State.STOPPED;
-        applyPower();
+        applyPower(false);
     }
-
 }
