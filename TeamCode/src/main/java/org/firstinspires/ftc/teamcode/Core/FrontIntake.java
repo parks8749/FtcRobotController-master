@@ -13,10 +13,10 @@ public class FrontIntake {
 
     public void init() {
         frontIntake.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontIntake.setPower(0.0);
     }
 
     /**
-     * Mirrors belts mode:
      * mode == 1 -> power = +1.0
      * mode == 2 -> power = -1.0
      * mode == 0 -> power = 0.0
@@ -29,6 +29,10 @@ public class FrontIntake {
         } else {
             frontIntake.setPower(0.0);
         }
+    }
+
+    public boolean isActive(int beltsMode) {
+        return beltsMode == 1 || beltsMode == 2;
     }
 
     public void stop() {

@@ -4,10 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.teamcode.Core.*;
 
 @TeleOp(name="Decode2025", group="TeleOp")
 public class Decode2025 extends LinearOpMode {
+
     public DriveTrain driveTrain;
     public BackBottom backBottom;
     public BackIntake backIntake;
@@ -20,21 +22,40 @@ public class Decode2025 extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        driveTrain   = new DriveTrain(hardwareMap, "leftFront", "leftBack", "rightFront", "rightBack");
-        backBottom   = new BackBottom(hardwareMap.get(CRServo.class, "BackBottom"));
-        backIntake   = new BackIntake(hardwareMap.get(CRServo.class, "BackIntake"));
-        launcherWheel = new LauncherWheel(hardwareMap.get(CRServo.class, "LauncherWheel"));
-        frontIntake = new FrontIntake(hardwareMap.get(CRServo.class, "FrontIntake"));
+
+        driveTrain = new DriveTrain(
+                hardwareMap,
+                "leftFront", "leftBack",
+                "rightFront", "rightBack"
+        );
+
+        backBottom = new BackBottom(
+                hardwareMap.get(CRServo.class, "BackBottom")
+        );
+
+        backIntake = new BackIntake(
+                hardwareMap.get(CRServo.class, "BackIntake")
+        );
+
+        launcherWheel = new LauncherWheel(
+                hardwareMap.get(CRServo.class, "LauncherWheel")
+        );
+
+        frontIntake = new FrontIntake(
+                hardwareMap.get(CRServo.class, "FrontIntake")
+        );
 
         flyWheels = new FlyWheels(
                 hardwareMap.get(DcMotor.class, "leftFly"),
                 hardwareMap.get(DcMotor.class, "rightFly")
         );
+
         belts = new Belts(
                 hardwareMap.get(CRServo.class, "LeftBelt"),
                 hardwareMap.get(CRServo.class, "RightBelt")
         );
 
+        // Init all subsystems
         backBottom.init();
         backIntake.init();
         launcherWheel.init();
@@ -44,28 +65,43 @@ public class Decode2025 extends LinearOpMode {
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
         waitForStart();
 
         while (opModeIsActive()) {
+
             driveTrain.Drive(gamepad1);
 
-            float leftStick = applyDeadzone(gamepad2.left_stick_y, STICK_DEADZONE);
+            float leftStick  = applyDeadzone(gamepad2.left_stick_y, STICK_DEADZONE);
             float rightStick = applyDeadzone(gamepad2.right_stick_y, STICK_DEADZONE);
 
-            // --- Capture the Override Button ---
-            boolean isAllActive = gamepad2.y;
+            boolean overrideAll = gamepad2.y;
 
-            // --- Pass gamepad2.y into the subsystems ---
-            launcherWheel.update(gamepad2.b, isAllActive);
-            backIntake.update(leftStick, isAllActive);
-            backBottom.update(belts.getMode(), gamepad2.left_stick_y, isAllActive);
-            flyWheels.update(gamepad2.right_bumper, gamepad2.left_bumper, isAllActive);
+            int beltsMode = belts.getMode();
+            boolean frontActive = frontIntake.isActive(beltsMode);
 
-            // Belts and FrontIntake remain normal (unless you want to add it there too)
+            launcherWheel.update(gamepad2.b, overrideAll);
+            backIntake.update(leftStick, overrideAll);
+
+            backBottom.update(
+                    beltsMode,
+                    gamepad2.left_stick_y,
+                    overrideAll,
+                    frontActive
+            );
+
+            flyWheels.update(
+                    gamepad2.right_bumper,
+                    gamepad2.left_bumper,
+                    overrideAll
+            );
+
             belts.update(rightStick);
-            frontIntake.update(belts.getMode());
+            frontIntake.update(beltsMode);
 
+            telemetry.addData("Front Intake Active", frontActive);
             telemetry.update();
+
             sleep(10);
         }
     }
