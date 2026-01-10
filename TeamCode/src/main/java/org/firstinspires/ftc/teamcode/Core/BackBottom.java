@@ -21,7 +21,7 @@ public class BackBottom {
     public void update(int beltsMode, float leftStickY, boolean override) {
         if (override) {
             // Adjust sign here if it spins backwards on 'Y' press
-            backBottom.setPower(POWER);
+            backBottom.setPower(-POWER);
             return;
         }
 
