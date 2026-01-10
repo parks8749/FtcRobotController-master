@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.PinpointLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 
 @Autonomous(name = "DebugAuto", group = "Autonomous")
 public class DebugAuto extends LinearOpMode {
@@ -21,21 +25,39 @@ public class DebugAuto extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            // keep the drive's pose estimate up-to-date
             drive.updatePoseEstimate();
-            Pose2d currentPose = drive.localizer.getPose();
 
-            // If these numbers don't change when you PUSH the robot,
-            // the Pinpoint is not configured correctly.
-            telemetry.addData("X Pose", currentPose.position.x);
-            telemetry.addData("Y Pose", currentPose.position.y);
-            telemetry.addData("Heading", Math.toDegrees(currentPose.heading.toDouble()));
+            // safe-cast to PinpointLocalizer only if it's actually in use
+            if (drive.localizer instanceof PinpointLocalizer) {
+                PinpointLocalizer pin = (PinpointLocalizer) drive.localizer;
 
-            // Check if motors have power
+                telemetry.addData("Pinpoint status", pin.driver.getDeviceStatus());
+                telemetry.addData("Pin X (in)", pin.driver.getPosX(DistanceUnit.INCH));
+                telemetry.addData("Pin Y (in)", pin.driver.getPosY(DistanceUnit.INCH));
+                telemetry.addData("Pin Heading (deg)",
+                        Math.toDegrees(pin.driver.getHeading(UnnormalizedAngleUnit.RADIANS)));
+            } else {
+                telemetry.addLine("PinpointLocalizer not present on drive.localizer");
+            }
+
+            // IMU yaw (from LazyImu) and motor encoder ticks
+            telemetry.addData("IMU yaw (deg)",
+                    Math.toDegrees(drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)));
+
+            // encoder ticks (raw)
+            telemetry.addData("LF ticks", drive.leftFront.getCurrentPosition());
+            telemetry.addData("LB ticks", drive.leftBack.getCurrentPosition());
+            telemetry.addData("RF ticks", drive.rightFront.getCurrentPosition());
+            telemetry.addData("RB ticks", drive.rightBack.getCurrentPosition());
+
+            // motor power check
             telemetry.addData("LeftFront Power", drive.leftFront.getPower());
+
             telemetry.update();
 
+            // small manual test action when you press 'A'
             if (gamepad1.a) {
-                // Try a very simple movement
                 Actions.runBlocking(drive.actionBuilder(startPose)
                         .lineToX(10)
                         .build());
