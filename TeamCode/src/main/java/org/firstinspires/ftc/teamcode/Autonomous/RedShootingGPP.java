@@ -45,8 +45,8 @@ public class RedShootingGPP extends LinearOpMode
             backIntake.setPower(-1.0);
             backBottom.setPower(-1.0);
             launcherWheel.setPower(1.0);
-            leftFlyWheel.setPower(-1.0);
-            rightFlyWheel.setPower(1.0);
+            leftFlyWheel.setPower(-0.85);
+            rightFlyWheel.setPower(0.85);
             sleep(4000);
 //-------------------------------------------------------------------------------
             // this section turns on all the things needed to shoot the artifact in front intake
@@ -88,8 +88,8 @@ public class RedShootingGPP extends LinearOpMode
             driver.turn_ticks(-460,1);
             driver.forward_tiles(0.4,1);
             backBottom.setPower(1.0);
-            leftFlyWheel.setPower(-1.0);
-            rightFlyWheel.setPower(1.0);
+            leftFlyWheel.setPower(-0.85);
+            rightFlyWheel.setPower(0.85);
             sleep(4000);
 //--------------------------------------------------------------------------------------------------
             // stops all motor and get out of launch zone to get leave points

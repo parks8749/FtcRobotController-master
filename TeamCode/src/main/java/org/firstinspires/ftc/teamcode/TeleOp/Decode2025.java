@@ -25,8 +25,8 @@ public class Decode2025 extends LinearOpMode {
 
         driveTrain = new DriveTrain(
                 hardwareMap,
-                "leftFront", "leftBack",
-                "rightFront", "rightBack"
+                "fL", "bL",
+                "fR", "bR"
         );
 
         backBottom = new BackBottom(

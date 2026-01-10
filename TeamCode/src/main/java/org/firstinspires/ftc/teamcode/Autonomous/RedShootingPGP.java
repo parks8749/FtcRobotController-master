@@ -45,18 +45,14 @@ public class RedShootingPGP extends LinearOpMode
             backIntake.setPower(-1.0);
             backBottom.setPower(-1.0);
             launcherWheel.setPower(1.0);
-            leftFlyWheel.setPower(-1.0);
-            rightFlyWheel.setPower(1.0);
+            leftFlyWheel.setPower(-0.85);
+            rightFlyWheel.setPower(0.85);
             sleep(4000);
 //-------------------------------------------------------------------------------
             // this section turns on all the things needed to shoot the artifact in front intake
             rightBelt.setPower(1.0);
             leftBelt.setPower(-1.0);
             backBottom.setPower(1.0);
-            launcherWheel.setPower(1.0);
-            backIntake.setPower(-1.0);
-            leftFlyWheel.setPower(-1.0);
-            rightFlyWheel.setPower(1.0);
             sleep(4000);
 //--------------------------------------------------------------------------------------------------
             // this section turns off all the parts to ensure nothing else happens that might give us penalty
@@ -70,7 +66,7 @@ public class RedShootingPGP extends LinearOpMode
 //--------------------------------------------------------------------------------------------------
             // drives robot to take in the first row of artifacts (GPP)
             driver.forward_tiles(-0.5);
-            driver.turn_ticks(-20,1);
+            driver.turn_ticks(420,1);
             driver.strafe_tiles(-2.05,1);
             frontIntake.setPower(1.0);
             rightBelt.setPower(1.0);
@@ -88,8 +84,8 @@ public class RedShootingPGP extends LinearOpMode
             driver.turn_ticks(-440,1);
             driver.forward_tiles(0.2,1);
             backBottom.setPower(1.0);
-            leftFlyWheel.setPower(-1.0);
-            rightFlyWheel.setPower(1.0);
+            leftFlyWheel.setPower(-0.85);
+            rightFlyWheel.setPower(0.85);
             sleep(4000);
 //--------------------------------------------------------------------------------------------------
             // stops all motor and get out of launch zone to get leave points

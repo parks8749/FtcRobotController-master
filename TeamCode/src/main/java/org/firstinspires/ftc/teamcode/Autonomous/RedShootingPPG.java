@@ -45,8 +45,8 @@ public class RedShootingPPG extends LinearOpMode
             backIntake.setPower(-1.0);
             backBottom.setPower(-1.0);
             launcherWheel.setPower(1.0);
-            leftFlyWheel.setPower(-1.0);
-            rightFlyWheel.setPower(1.0);
+            leftFlyWheel.setPower(-.85);
+            rightFlyWheel.setPower(.85);
             sleep(2000);
 //-------------------------------------------------------------------------------
             // this section turns on all the things needed to shoot the artifact in front intake
@@ -55,9 +55,9 @@ public class RedShootingPPG extends LinearOpMode
             backBottom.setPower(1.0);
             launcherWheel.setPower(1.0);
             backIntake.setPower(-1.0);
-            leftFlyWheel.setPower(-1.0);
-            rightFlyWheel.setPower(1.0);
-            sleep(6000);
+            leftFlyWheel.setPower(-.85);
+            rightFlyWheel.setPower(.85);
+            sleep(4000);
 //--------------------------------------------------------------------------------------------------
             // this section turns off all the parts to ensure nothing else happens that might give us penalty
             rightBelt.setPower(0);
@@ -78,7 +78,7 @@ public class RedShootingPPG extends LinearOpMode
             launcherWheel.setPower(1.0);
             backIntake.setPower(-1.0);
 //            driver.forward_tiles(3, 0.2);
-            driver.forward_tiles(1.3,0.3);
+            driver.forward_tiles(1,0.3);
 //            frontIntake.setPower(0);
 //            rightBelt.setPower(0);
 //            leftBelt.setPower(0);
@@ -86,15 +86,15 @@ public class RedShootingPPG extends LinearOpMode
             backIntake.setPower(0);
 //--------------------------------------------------------------------------------------------------
             // backs up and gets in position to shoot in goal
-            driver.forward_tiles(-0.4);
+            driver.forward_tiles(-0.6);
             driver.strafe_tiles(1.5,1);
             driver.turn_ticks(-435,1);
-            driver.forward_tiles(0.1);
+            driver.forward_tiles(0.2);
             backIntake.setPower(-1.0);
             backBottom.setPower(1.0);
-            leftFlyWheel.setPower(-1.0);
-            rightFlyWheel.setPower(1.0);
-            sleep(4000);
+            leftFlyWheel.setPower(-.85);
+            rightFlyWheel.setPower(.85);
+            sleep(3000);
 //--------------------------------------------------------------------------------------------------
             // stops all motor and get out of launch zone to get leave points
             rightBelt.setPower(0);
@@ -104,7 +104,8 @@ public class RedShootingPPG extends LinearOpMode
             backIntake.setPower(0);
             leftFlyWheel.setPower(0.0);
             rightFlyWheel.setPower(0.0);
-            driver.strafe_tiles(1,1);
+            driver.turn_ticks(420,1);
+            driver.strafe_tiles(-1.2,1);
         }
 
     }

@@ -64,10 +64,10 @@ public class Driver extends DriveTrain
         while (opMode.opModeIsActive() && super.isBusy() && timer.milliseconds() < timeoutMs)
         {
             // Helpful telemetry for debugging during autonomous
-            opMode.telemetry.addData("FL", getMotorFLPosition());
-            opMode.telemetry.addData("FR", getMotorFRPosition());
-            opMode.telemetry.addData("BL", getMotorBLPosition());
-            opMode.telemetry.addData("BR", getMotorBRPosition());
+            opMode.telemetry.addData("fL", getMotorFLPosition());
+            opMode.telemetry.addData("fR", getMotorFRPosition());
+            opMode.telemetry.addData("bL", getMotorBLPosition());
+            opMode.telemetry.addData("bR", getMotorBRPosition());
             opMode.telemetry.update();
 
             // Let the system breathe and allow other tasks to run

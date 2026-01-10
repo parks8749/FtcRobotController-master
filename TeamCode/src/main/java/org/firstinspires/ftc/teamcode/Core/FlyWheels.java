@@ -7,7 +7,7 @@ public class FlyWheels {
 
     private final DcMotor leftFlyWheel;
     private final DcMotor rightFlyWheel;
-    private static final double POWER = 1.0;
+    private static final double POWER = 0.85; // original: 1.0
 
     private enum State { STOPPED, FORWARD, REVERSE }
     private State state = State.STOPPED;
