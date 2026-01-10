@@ -80,26 +80,33 @@ public class Decode2025 extends LinearOpMode {
             int beltsMode = belts.getMode();
             boolean frontActive = frontIntake.isActive(beltsMode);
 
-            launcherWheel.update(gamepad2.b, overrideAll);
-            backIntake.update(leftStick, overrideAll);
+            launcherWheel.update(gamepad2.b, overrideAll, gamepad2.a);
+            backIntake.update(leftStick, overrideAll, beltsMode, gamepad2.a);
+
 
             backBottom.update(
                     beltsMode,
                     gamepad2.left_stick_y,
                     overrideAll,
-                    frontActive
+                    frontActive,
+                    gamepad2.a
             );
 
             flyWheels.update(
                     gamepad2.right_bumper,
                     gamepad2.left_bumper,
+                    gamepad2.x,
                     overrideAll
             );
 
-            belts.update(rightStick);
-            frontIntake.update(beltsMode);
+
+            belts.update(rightStick, gamepad2.a);
+            frontIntake.update(beltsMode, gamepad2.a);
 
             telemetry.addData("Front Intake Active", frontActive);
+
+            flyWheels.publishTelemetry(telemetry);
+
             telemetry.update();
 
             sleep(10);

@@ -8,6 +8,7 @@ public class Belts {
     private final CRServo leftBelt;
     private final CRServo rightBelt;
     private static final double POWER = 1.0;
+//    private boolean lastAPressed = false;
 
     // 0 = off, 1 = forward, 2 = reverse
     private int mode = 0;
@@ -28,7 +29,7 @@ public class Belts {
      * stickY < 0 => reverse
      * stickY == 0 => off
      */
-    public void update(float rightStickY) {
+    public void update(float rightStickY, boolean aPressed) {
         if (rightStickY > 0.0f) {
             mode = 1;
         } else if (rightStickY < 0.0f) {
@@ -51,6 +52,13 @@ public class Belts {
                 leftBelt.setPower(POWER);
                 break;
         }
+
+
+        if (aPressed) {
+            rightBelt.setPower(1.0);
+            leftBelt.setPower(-1.0);
+        }
+
     }
 
     public void stop() {

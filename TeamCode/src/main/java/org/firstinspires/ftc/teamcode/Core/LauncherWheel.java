@@ -7,7 +7,7 @@ public class LauncherWheel {
 
     private final CRServo launcherWheel;
     private static final double POWER = 1.0;
-    private boolean toggled = false;
+    private boolean toggledB = false;
     private boolean lastBPressed = false;
 
     public LauncherWheel(CRServo launcherWheel) {
@@ -20,24 +20,32 @@ public class LauncherWheel {
     }
 
     // UPDATED METHOD
-    public void update(boolean bPressed, boolean override) {
-        // Normal toggle logic updates the 'toggled' variable
+    public void update(boolean bPressed, boolean override, boolean aPressed) {
+
+        // 1) Maintain toggle state for B (edge detection)
         if (bPressed && !lastBPressed) {
-            toggled = !toggled;
+            toggledB = !toggledB;
         }
         lastBPressed = bPressed;
 
-        // Priority: If override (Y button) is held, spin.
-        // Otherwise, use the toggle state.
+        // 2) A hold should immediately run the launcher while held (highest priority)
+        if (aPressed) {
+            launcherWheel.setPower(POWER);
+            return;
+        }
+
+        // 3) Override (Y) next priority
         if (override) {
             launcherWheel.setPower(POWER);
-        } else {
-            launcherWheel.setPower(toggled ? POWER : 0.0);
+            return;
         }
+
+        // 4) Otherwise follow toggledB state
+        launcherWheel.setPower(toggledB ? POWER : 0.0);
     }
 
     public void stop() {
-        toggled = false;
+        toggledB = false;
         launcherWheel.setPower(0.0);
     }
 }
