@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name="BlueShootingPGP", group="Autonomous")
 public class BlueShootingPGP extends LinearOpMode
@@ -47,7 +47,7 @@ public class BlueShootingPGP extends LinearOpMode
             launcherWheel.setPower(1.0);
             leftFlyWheel.setPower(-0.85);
             rightFlyWheel.setPower(0.85);
-            sleep(4000);
+            sleep(2000);
 //-------------------------------------------------------------------------------
             // this section turns on all the things needed to shoot the artifact in front intake
             rightBelt.setPower(1.0);
@@ -67,7 +67,7 @@ public class BlueShootingPGP extends LinearOpMode
             // drives robot to take in the first row of artifacts (GPP)
             driver.forward_tiles(-0.5);
             driver.turn_ticks(-420,1);
-            driver.strafe_tiles(2.05,1);
+            driver.strafe_tiles(2.2,1);
             frontIntake.setPower(1.0);
             rightBelt.setPower(1.0);
             leftBelt.setPower(-1.0);
@@ -75,17 +75,19 @@ public class BlueShootingPGP extends LinearOpMode
             backIntake.setPower(-1.0);
 //            driver.forward_tiles(3, 0.2);
             sleep(500);
-            driver.forward_tiles(2.5);
+            driver.forward_tiles(1.2);
             sleep(500);
 //--------------------------------------------------------------------------------------------------
             // backs up and gets in position to shoot in goal
-            driver.forward_tiles(-1.35);
+            driver.forward_tiles(-1.1);
+            launcherWheel.setPower(0.0);
             driver.strafe_tiles(-2.7,1);
             driver.turn_ticks(440,1);
             driver.forward_tiles(0.2,1);
             backBottom.setPower(1.0);
             leftFlyWheel.setPower(-0.85);
             rightFlyWheel.setPower(0.85);
+            launcherWheel.setPower(1.0);
             sleep(4000);
 //--------------------------------------------------------------------------------------------------
             // stops all motor and get out of launch zone to get leave points
@@ -96,7 +98,7 @@ public class BlueShootingPGP extends LinearOpMode
             backIntake.setPower(0);
             leftFlyWheel.setPower(0.0);
             rightFlyWheel.setPower(0.0);
-            driver.strafe_tiles(1,1);
+            driver.strafe_tiles(1.1,1);
         }
 
     }
