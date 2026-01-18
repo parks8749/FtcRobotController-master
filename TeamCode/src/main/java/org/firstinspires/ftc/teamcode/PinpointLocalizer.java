@@ -16,8 +16,12 @@ import java.util.Objects;
 @Config
 public final class PinpointLocalizer implements Localizer {
     public static class Params {
-        public double parYTicks = 0.0; // y position of the parallel encoder (in tick units)
-        public double perpXTicks = 0.0; // x position of the perpendicular encoder (in tick units)
+        // Y pod offset (forward/back from center) in *ticks*
+        public double parYTicks = 874;
+
+        // X pod offset (left/right from center) in *ticks*
+        // Left is +, right is -
+        public double perpXTicks = -2545;  // you said negative worked better
     }
 
     public static Params PARAMS = new Params();
@@ -29,20 +33,22 @@ public final class PinpointLocalizer implements Localizer {
     private Pose2d txPinpointRobot = new Pose2d(0, 0, 0);
 
     public PinpointLocalizer(HardwareMap hardwareMap, double inPerTick, Pose2d initialPose) {
-        // TODO: make sure your config has a Pinpoint device with this name
-        //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
         driver = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
         double mmPerTick = inPerTick * 25.4;
+
+        // Set encoder resolution in ticks/mm
         driver.setEncoderResolution(1 / mmPerTick, DistanceUnit.MM);
+
+        // Apply offsets in mm
         driver.setOffsets(mmPerTick * PARAMS.parYTicks, mmPerTick * PARAMS.perpXTicks, DistanceUnit.MM);
 
-        // TODO: reverse encoder directions if needed
+        // Encoder directions (flip if needed)
         initialParDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
         initialPerpDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
-
         driver.setEncoderDirections(initialParDirection, initialPerpDirection);
 
+        // IMPORTANT: robot must be still when this runs
         driver.resetPosAndIMU();
 
         txWorldPinpoint = initialPose;
@@ -61,13 +67,28 @@ public final class PinpointLocalizer implements Localizer {
     @Override
     public PoseVelocity2d update() {
         driver.update();
+
         if (Objects.requireNonNull(driver.getDeviceStatus()) == GoBildaPinpointDriver.DeviceStatus.READY) {
-            txPinpointRobot = new Pose2d(driver.getPosX(DistanceUnit.INCH), driver.getPosY(DistanceUnit.INCH), driver.getHeading(UnnormalizedAngleUnit.RADIANS));
-            Vector2d worldVelocity = new Vector2d(driver.getVelX(DistanceUnit.INCH), driver.getVelY(DistanceUnit.INCH));
+            // IMPORTANT:
+            // Road Runner expects: X = forward, Y = left
+            // If your robot forward makes Y increase and left makes X increase, swap X/Y here.
+            double rrX = -driver.getPosY(DistanceUnit.INCH);
+            double rrY = driver.getPosX(DistanceUnit.INCH);
+
+            double heading = -driver.getHeading(UnnormalizedAngleUnit.RADIANS);
+
+            txPinpointRobot = new Pose2d(rrX, rrY, heading);
+
+            Vector2d worldVelocity = new Vector2d(
+                    driver.getVelY(DistanceUnit.INCH),
+                    driver.getVelX(DistanceUnit.INCH)
+            );
+
             Vector2d robotVelocity = Rotation2d.fromDouble(-txPinpointRobot.heading.log()).times(worldVelocity);
 
             return new PoseVelocity2d(robotVelocity, driver.getHeadingVelocity(UnnormalizedAngleUnit.RADIANS));
         }
+
         return new PoseVelocity2d(new Vector2d(0, 0), 0);
     }
 }
